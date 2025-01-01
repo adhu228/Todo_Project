@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Project</title>
+    <!-- <link rel="stylesheet" href="css/home.css"> -->
+    <style>
+    body{
+        font-family: Arial,sans-serif;
+        margin: 20px;
+        background-color:white;
+    }
+    h1{
+        color: black;
+        text-align: center;
+    }
+    a{
+        display: inline-block;
+        margin: 10px 0;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    a:hover{
+        background-color: #0056b3;
+    }
+    table{
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    th,td{
+        border: 1px;
+        padding: 10px;
+        text-align: left;
+    }
+    th{
+        background-color:blue;
+        color: white;
+    }
+    button{
+        padding: 5px 10px;
+        background-color: azure;
+        color: red;
+        border: none;
+        border-radius: 5px;
+        cursor:pointer;
+    }
+    button:hover{
+        background-color: #c82333;
+    }
+    .update_btn{
+        background-color: #28a745;
+        color: white;
+    }
+    .update_btn:hover{
+        background-color: black;
+    }
+    </style>
+</head>
+<body>
+    <h1><strong>Todo Project</strong></h1>
+    <a href="{% url 'add_task' %}">Add Task</a>
+    <h2>Task List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Due Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{task.title}}</td>
+                <td>{{task.description}}</td>
+                <td>{{task.due_date}}</td>
+                <td>
+                    <form method="POST" action="{% url 'delete_task' task.id %}" style="display:inline;">
+                        {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+                <a href="{% url 'update_task' task.id %}" class="update_btn">Update</a>
+            </td>
+            </tr>
+         {% empty %}
+         <tr>
+            <td colspan="4">No Tasks Available</td>
+         </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
